@@ -10,6 +10,7 @@ public class WorkingArea {
 
     static List<Vertex> nodes;
     static List<Edge> edges;
+    static BestRoute route;
 
     public static void testExcute() {
         nodes = new ArrayList<>();
@@ -21,16 +22,14 @@ public class WorkingArea {
         }
         Vertex a = nodes.get(2);
         Vertex b = nodes.get(5);
-        a.setLocation(1, 5);
-        b.setLocation(200, 7);
-
         Vertex d = nodes.get(3);
         Vertex e = nodes.get(4);
-        d.setLocation(2, 51);
-        e.setLocation(2, 31);
-
         Vertex f = nodes.get(1);
         Vertex g = nodes.get(0);
+        a.setLocation(1, 5);
+        b.setLocation(200, 7);
+        d.setLocation(2, 51);
+        e.setLocation(2, 31);
         f.setLocation(1, 30);
         g.setLocation(2, 30);
 
@@ -42,19 +41,38 @@ public class WorkingArea {
                 makeEdges("Edge" + (i + j), nodes.get(i), nodes.get(j));
             }
         }
+        
+        Message msg=new Message(0,3,0);
+        
         Graph graph = new Graph(nodes, edges);
-        BestRoute dijkstra = new BestRoute(graph);
-        dijkstra.execute(nodes.get(0));
-        LinkedList<Vertex> path = dijkstra.getPath(nodes.get(3));
+        route = new BestRoute(graph);
+        send(0,3,msg);
 
+    }
+
+    public static void send(int sender_id, int receiver_id,Message msg) {
+        route.execute(nodes.get(sender_id));
+        LinkedList<Vertex> path = route.getPath(nodes.get(receiver_id));
         if (path == null) {
-
+              System.out.println(" Destination can not be reached from given source");
         } else {
             for (int i = 0; i < path.size(); i++) {
                 System.out.println(path.get(i));
+                msg.power++;
+                
             }
+            receive(receiver_id,msg);
         }
-
+    }
+    
+    
+        public static void receive(int receiver_id,Message msg) {
+        
+                System.out.println("Message was received    ");
+                System.out.println(" Message Sender : "+ msg.sender_id+
+                                    " ,Message Receiver : "+msg.receiver_id
+                                     +" ,Power Consumed "+(msg.power-1));
+           
     }
 
     public static void makeEdges(String laneId, Vertex a, Vertex b) {
@@ -65,7 +83,5 @@ public class WorkingArea {
 
         }
     }
-
-
 
 }
