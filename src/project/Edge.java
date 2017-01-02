@@ -6,7 +6,7 @@ public class Edge  {
         private final String id;
         private final Vertex source;
         private final Vertex destination;
-        private final int weight;
+        private double weight;
 
         public Edge(String id, Vertex source, Vertex destination, int weight) {
                 this.id = id;
@@ -15,6 +15,12 @@ public class Edge  {
                 this.weight = weight;
         }
 
+              public Edge(String id, Vertex source, Vertex destination) {
+                this.id = id;
+                this.source = source;
+                this.destination = destination;
+                this.weight = 0;
+        }
         public String getId() {
                 return id;
         }
@@ -25,8 +31,12 @@ public class Edge  {
         public Vertex getSource() {
                 return source;
         }
-        public int getWeight() {
+        public double getWeight() {
                 return weight;
+        }
+        
+            public void setWeight(double w) {
+                this.weight=w;
         }
 
         @Override
