@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package project;
 
 import java.util.ArrayList;
@@ -19,37 +15,37 @@ import java.util.Set;
  * @author Basma Mohamed
  */
 public class BestRoute {
-     private final List<Vertex> nodes;
+     private final List<Node> nodes;
         private final List<Edge> edges;
-        private Set<Vertex> settledNodes;
-        private Set<Vertex> unSettledNodes;
-        private Map<Vertex, Vertex> predecessors;
-        private Map<Vertex, Integer> distance;
+        private Set<Node> settledNodes;
+        private Set<Node> unSettledNodes;
+        private Map<Node, Node> predecessors;
+        private Map<Node, Integer> distance;
 
         public BestRoute(Graph graph) {
-                // create a copy of the array so that we can operate on this array
-                this.nodes = new ArrayList<Vertex>(graph.getVertexes());
+                
+                this.nodes = new ArrayList<Node>(graph.getVertexes());
                 this.edges = new ArrayList<Edge>(graph.getEdges());
         }
 
-        public void execute(Vertex source) {
-                settledNodes = new HashSet<Vertex>();
-                unSettledNodes = new HashSet<Vertex>();
-                distance = new HashMap<Vertex, Integer>();
-                predecessors = new HashMap<Vertex, Vertex>();
+        public void execute(Node source) {
+                settledNodes = new HashSet<Node>();
+                unSettledNodes = new HashSet<Node>();
+                distance = new HashMap<Node, Integer>();
+                predecessors = new HashMap<Node, Node>();
                 distance.put(source, 0);
                 unSettledNodes.add(source);
                 while (unSettledNodes.size() > 0) {
-                        Vertex node = getMinimum(unSettledNodes);
+                        Node node = getMinimum(unSettledNodes);
                         settledNodes.add(node);
                         unSettledNodes.remove(node);
                         findMinimalDistances(node);
                 }
         }
 
-        private void findMinimalDistances(Vertex node) {
-                List<Vertex> adjacentNodes = getNeighbors(node);
-                for (Vertex target : adjacentNodes) {
+        private void findMinimalDistances(Node node) {
+                List<Node> adjacentNodes = getNeighbors(node);
+                for (Node target : adjacentNodes) {
                         if (getShortestDistance(target) > getShortestDistance(node)
                                         + getDistance(node, target)) {
                                 distance.put(target, getShortestDistance(node)
@@ -61,7 +57,7 @@ public class BestRoute {
 
         }
 
-        private int getDistance(Vertex node, Vertex target) {
+        private int getDistance(Node node, Node target) {
                 for (Edge edge : edges) {
                         if (edge.getSource().equals(node)
                                         && edge.getDestination().equals(target)) {
@@ -71,8 +67,8 @@ public class BestRoute {
                 throw new RuntimeException("Should not happen");
         }
 
-        private List<Vertex> getNeighbors(Vertex node) {
-                List<Vertex> neighbors = new ArrayList<Vertex>();
+        private List<Node> getNeighbors(Node node) {
+                List<Node> neighbors = new ArrayList<Node>();
                 for (Edge edge : edges) {
                         if (edge.getSource().equals(node)
                                         && !isSettled(edge.getDestination())) {
@@ -82,9 +78,9 @@ public class BestRoute {
                 return neighbors;
         }
 
-        private Vertex getMinimum(Set<Vertex> vertexes) {
-                Vertex minimum = null;
-                for (Vertex vertex : vertexes) {
+        private Node getMinimum(Set<Node> vertexes) {
+                Node minimum = null;
+                for (Node vertex : vertexes) {
                         if (minimum == null) {
                                 minimum = vertex;
                         } else {
@@ -96,11 +92,11 @@ public class BestRoute {
                 return minimum;
         }
 
-        private boolean isSettled(Vertex vertex) {
+        private boolean isSettled(Node vertex) {
                 return settledNodes.contains(vertex);
         }
 
-        private int getShortestDistance(Vertex destination) {
+        private int getShortestDistance(Node destination) {
                 Integer d = distance.get(destination);
                 if (d == null) {
                         return Integer.MAX_VALUE;
@@ -109,14 +105,11 @@ public class BestRoute {
                 }
         }
 
-        /*
-         * This method returns the path from the source to the selected target and
-         * NULL if no path exists
-         */
-        public LinkedList<Vertex> getPath(Vertex target) {
-                LinkedList<Vertex> path = new LinkedList<Vertex>();
-                Vertex step = target;
-                // check if a path exists
+        
+        public LinkedList<Node> getPath(Node target) {
+                LinkedList<Node> path = new LinkedList<Node>();
+                Node step = target;
+             
                 if (predecessors.get(step) == null) {
                         return null;
                 }
@@ -125,7 +118,7 @@ public class BestRoute {
                         step = predecessors.get(step);
                         path.add(step);
                 }
-                // Put it into the correct order
+             
                 Collections.reverse(path);
                 return path;
         }

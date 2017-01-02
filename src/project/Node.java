@@ -1,18 +1,18 @@
 package project;
 
-public class Vertex {
+public class Node {
 
     final private String id;
     private String name;
     private Location position;
 
-    public Vertex(String id, String name) {
+    public Node(String id, String name) {
         this.id = id;
         this.name = name;
 
     }
 
-    public Vertex(String id, String name, Location loc) {
+    public Node(String id, String name, Location loc) {
         this.id = id;
         this.name = name;
         this.position = loc;
@@ -54,7 +54,7 @@ public class Vertex {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Vertex other = (Vertex) obj;
+        Node other = (Node) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;
@@ -71,7 +71,7 @@ public class Vertex {
     }
     
     
-    public double distance(Vertex mobile) {
+    public double distance(Node mobile) {
         int locX = this.position.getX();
         int locY = this.position.getY();
 

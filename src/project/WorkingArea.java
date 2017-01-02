@@ -8,24 +8,24 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class WorkingArea {
 
-    static List<Vertex> nodes;
+    static List<Node> nodes;
     static List<Edge> edges;
     static BestRoute route;
 
-    public static void testExcute() {
+    public static void testProgram() {
         nodes = new ArrayList<>();
         edges = new ArrayList<>();
 
         for (int i = 0; i < 6; i++) {
-            Vertex location = new Vertex("Node_" + i, "Node_" + i);
+            Node location = new Node("Node_" + i, "Node_" + i);
             nodes.add(location);
         }
-        Vertex a = nodes.get(2);
-        Vertex b = nodes.get(5);
-        Vertex d = nodes.get(3);
-        Vertex e = nodes.get(4);
-        Vertex f = nodes.get(1);
-        Vertex g = nodes.get(0);
+        Node a = nodes.get(2);
+        Node b = nodes.get(5);
+        Node d = nodes.get(3);
+        Node e = nodes.get(4);
+        Node f = nodes.get(1);
+        Node g = nodes.get(0);
         a.setLocation(1, 5);
         b.setLocation(200, 7);
         d.setLocation(2, 51);
@@ -42,9 +42,9 @@ public class WorkingArea {
             }
         }
         
-        Message msg=new Message(0,3,0);
-        
         Graph graph = new Graph(nodes, edges);
+        
+        Message msg=new Message(0,3,0);
         route = new BestRoute(graph);
         send(0,3,msg);
 
@@ -52,14 +52,13 @@ public class WorkingArea {
 
     public static void send(int sender_id, int receiver_id,Message msg) {
         route.execute(nodes.get(sender_id));
-        LinkedList<Vertex> path = route.getPath(nodes.get(receiver_id));
+        LinkedList<Node> path = route.getPath(nodes.get(receiver_id));
         if (path == null) {
               System.out.println(" Destination can not be reached from given source");
         } else {
             for (int i = 0; i < path.size(); i++) {
                 System.out.println(path.get(i));
-                msg.power++;
-                
+                msg.power_consumption++;  
             }
             receive(receiver_id,msg);
         }
@@ -71,16 +70,15 @@ public class WorkingArea {
                 System.out.println("Message was received    ");
                 System.out.println(" Message Sender : "+ msg.sender_id+
                                     " ,Message Receiver : "+msg.receiver_id
-                                     +" ,Power Consumed "+(msg.power-1));
+                                     +" ,Power Consumed "+(msg.power_consumption-1));
            
     }
 
-    public static void makeEdges(String laneId, Vertex a, Vertex b) {
+    public static void makeEdges(String edgeId, Node a, Node b) {
         int distance = (int) a.distance(b);
         if (distance <= 20) {
-            Edge lane = new Edge(laneId, a, b, distance);
+            Edge lane = new Edge(edgeId, a, b, distance);
             edges.add(lane);
-
         }
     }
 

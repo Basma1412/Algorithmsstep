@@ -10,8 +10,7 @@ class Message {
 
     int sender_id;
     int receiver_id;
-    
-    int power;
+    int power_consumption;
     int sequence_num;
     String message;
 
@@ -19,7 +18,7 @@ class Message {
         this.sender_id = sender_id;
         this.receiver_id = receiver_id;
         this.sequence_num = sequence_num;
-        power=0;
+        power_consumption=0;
     }
 
     public Message(String message) {
