@@ -10,10 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- *
- * @author Basma Mohamed
- */
+
 public class BestRoute {
      private final List<Node> nodes;
         private final List<Edge> edges;
