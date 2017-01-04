@@ -12,12 +12,13 @@ public class WorkingArea {
     static List<Edge> edges;
     static BestRoute route;
     static Random rn=new Random();
+    static GraphExplore g=new GraphExplore();
  static double total_Dynamic_power=0;
 static double average_total_power=0; 
     public static void testProgram(int n) {
         nodes = new ArrayList<>();
         edges = new ArrayList<>();
-
+       
         for (int i = 0; i < n; i++) {
             Node location = new Node("Node_" + i, "Node_" + i);
             nodes.add(location);
@@ -74,7 +75,8 @@ static double average_total_power=0;
         //route = new BestRoute(graph);
        // send(0,3,msg);
         
-System.out.println("Average total power of 1000 Messages "+(average_total_power/1000)*100+" % ");
+System.out.println("Average total power of 1000 Messages "+(average_total_power/1000)+" W ");
+g.SecondDraw(edges);
     }
 
     public static void send(int sender_id, int receiver_id,Message msg) {
@@ -83,17 +85,23 @@ System.out.println("Average total power of 1000 Messages "+(average_total_power/
         total_Dynamic_power=0;
         LinkedList<Node> path = route.getPath(nodes.get(receiver_id));
         if (path == null) {
-              System.out.println(" Destination can not be reached from given source");
+              System.out.println(" The node "+msg.receiver_id+" can not be reached from given source node "+msg.sender_id);
         } else {
             for (int i = 0; i < path.size(); i++) {
-                System.out.println(path.get(i));
+                //System.out.println(path.get(i));
                 msg.power_consumption++;
-                System.out.println("distance between two nodes "+edges.get(i).getWeight());
+              //  System.out.println("distance between two nodes "+edges.get(i).getSource()+" and"+edges.get(i).getDestination()+" is: "+edges.get(i).getWeight());
               total_Dynamic_power += edges.get(i).getWeight()*0.05;
                 
             }
             receive(receiver_id,msg);
+            System.out.println(" The path was:   ");
+    
+             for (int i = 0; i < path.size(); i++) {
+                System.out.print(path.get(i)+ "   ");
         }
+        }
+        System.out.println("");
     }
     
     
