@@ -14,7 +14,9 @@ public class WorkingArea {
     static Random rn=new Random();
     static GraphExplore g=new GraphExplore();
  static double total_Dynamic_power=0;
-static double average_total_power=0; 
+static double average_total_power=0;
+static int sent_messages_num=0;
+static int lost_messages_num=0;
     public static void testProgram(int n) {
         nodes = new ArrayList<>();
         edges = new ArrayList<>();
@@ -76,6 +78,8 @@ static double average_total_power=0;
        // send(0,3,msg);
         
 System.out.println("Average total power of 1000 Messages "+(average_total_power/1000)+" W ");
+        System.out.println("The number of sent messages is "+ sent_messages_num);
+        System.out.println("The number of lost messages is "+lost_messages_num);
 g.SecondDraw(edges);
     }
 
@@ -86,6 +90,7 @@ g.SecondDraw(edges);
         LinkedList<Node> path = route.getPath(nodes.get(receiver_id));
         if (path == null) {
               System.out.println(" The node "+msg.receiver_id+" can not be reached from given source node "+msg.sender_id);
+        lost_messages_num+=1;
         } else {
             for (int i = 0; i < path.size(); i++) {
                 //System.out.println(path.get(i));
@@ -106,7 +111,7 @@ g.SecondDraw(edges);
     
     
         public static void receive(int receiver_id,Message msg) {
-        
+        sent_messages_num+=1;
                 System.out.println("Message was received    ");
                 System.out.println(" Message Sender : "+ msg.sender_id+
                                     " ,Message Receiver : "+msg.receiver_id
